@@ -1,6 +1,7 @@
 import axios, { AxiosError, AxiosInstance, InternalAxiosRequestConfig } from 'axios';
 import createAuthRefreshInterceptor from 'axios-auth-refresh';
 
+import { DUMMYJSON_BASE_URL } from './base-urls';
 import {
   deleteAccessToken,
   deleteRefreshToken,
@@ -9,25 +10,20 @@ import {
   setAccessToken,
   setRefreshToken,
 } from '@/shared/security';
-
-import { ApiError } from './types';
+import { ApiError, normalizeError } from '@/shared/types/errors';
 
 const saveTokens = async (accessToken: string, refreshToken: string): Promise<void> => {
   try {
     await setAccessToken(accessToken);
     await setRefreshToken(refreshToken);
-  } catch (error) {
-    console.error('Failed to save tokens:', error);
-  }
+  } catch {}
 };
 
 const clearTokens = async (): Promise<void> => {
   try {
     await deleteAccessToken();
     await deleteRefreshToken();
-  } catch (error) {
-    console.error('Failed to clear tokens:', error);
-  }
+  } catch {}
 };
 
 const refreshAuthLogic = async (failedRequest: AxiosError): Promise<string> => {
@@ -40,14 +36,17 @@ const refreshAuthLogic = async (failedRequest: AxiosError): Promise<string> => {
 
   try {
     const refreshClient = axios.create({
-      baseURL: 'https://dummyjson.com',
+      baseURL: DUMMYJSON_BASE_URL,
       headers: {
         'Content-Type': 'application/json',
       },
       timeout: 10000,
     });
 
-    const response = await refreshClient.post('/auth/refresh', {
+    const response = await refreshClient.post<{
+      accessToken: string;
+      refreshToken: string;
+    }>('/auth/refresh', {
       refreshToken,
     });
 
@@ -62,7 +61,8 @@ const refreshAuthLogic = async (failedRequest: AxiosError): Promise<string> => {
     return newAccessToken;
   } catch (error) {
     await clearTokens();
-    throw error;
+    const apiError: ApiError = normalizeError(error);
+    throw apiError;
   }
 };
 
@@ -75,17 +75,45 @@ export const setupInterceptors = (client: AxiosInstance): void => {
       }
       return config;
     },
-    (error) => Promise.reject(error)
+    (error: AxiosError) => {
+      const apiError: ApiError = normalizeError(error);
+      return Promise.reject(apiError);
+    }
   );
 
   client.interceptors.response.use(
     (response) => response,
     (error: AxiosError) => {
-      const apiError: ApiError = {
-        message: error.message || 'An error occurred',
+      let errorMessage = error.message || 'An error occurred';
+
+      if (error.response?.data) {
+        const responseData = error.response.data;
+        if (typeof responseData === 'object' && responseData !== null) {
+          const data = responseData as Record<string, unknown>;
+          if ('message' in data && typeof data.message === 'string') {
+            errorMessage = data.message;
+          } else if ('error' in data && typeof data.error === 'string') {
+            errorMessage = data.error;
+          }
+        } else if (typeof responseData === 'string') {
+          errorMessage = responseData;
+        }
+      }
+
+      const errorForNormalization = {
+        message: errorMessage,
         status: error.response?.status,
         data: error.response?.data,
       };
+
+      const apiError: ApiError = normalizeError(errorForNormalization);
+
+      if (error.response?.status !== undefined) {
+        apiError.status = error.response.status;
+      }
+      if (error.response?.data !== undefined) {
+        apiError.data = error.response.data;
+      }
 
       if (error.response?.status === 401) {
         clearTokens();

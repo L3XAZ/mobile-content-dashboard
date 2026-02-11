@@ -3,5 +3,73 @@
     "loading": "Loading...",
     "error": "Error",
     "success": "Success"
+  },
+  "auth": {
+    "login": {
+      "title": "Login",
+      "subtitle": "Personal Account",
+      "username": "Username",
+      "usernamePlaceholder": "Enter your username",
+      "passwords": "Passwords",
+      "passwordPlaceholder": "Enter your password",
+      "forgot": "Forgot?",
+      "continue": "Continue",
+      "noAccount": "Don't have an account?",
+      "createAccount": "Create Account",
+      "error": "Error: Invalid Username or Password"
+    },
+    "signUp": {
+      "title": "Sign up",
+      "subtitle": "Personal Account",
+      "name": "Name",
+      "namePlaceholder": "Enter your name",
+      "username": "Username",
+      "usernamePlaceholder": "Enter your username",
+      "email": "E-mail",
+      "emailPlaceholder": "Enter your email",
+      "password": "Password",
+      "passwordPlaceholder": "Create a password",
+      "continue": "Continue",
+      "hasAccount": "Already have an account?",
+      "signIn": "Sign In",
+      "registrationFailed": "Registration failed. Please try again."
+    },
+    "pin": {
+      "createTitle": "Create a Pin code",
+      "repeatTitle": "Repeat a Pin code",
+      "enterTitle": "Enter Pin code",
+      "enterSubtitle": "Enter 4 digit code:",
+      "createSubtitle": "enter 4 digit code:",
+      "continue": "Continue",
+      "changeAccount": "Change Account",
+      "userNotFound": "User not found. Please try again.",
+      "pinSaveFailed": "Failed to save PIN. Please try again.",
+      "pinMismatch": "PIN codes do not match. Please try again.",
+      "invalidPin": "Invalid PIN. Please try again.",
+      "errorOccurred": "An error occurred. Please try again."
+    },
+    "welcome": {
+      "title": "Welcome",
+      "subtitle": "Choose your investment category and start your journey",
+      "bitcoin": "Bitcoin",
+      "etfs": "ETFs",
+      "crowdLending": "Crowd lending",
+      "commodities": "Commodities",
+      "signIn": "Sign In",
+      "signUp": "Sign up"
+    },
+    "validation": {
+      "emailInvalid": "Invalid email address",
+      "passwordMinLength": "Password must be at least 8 characters",
+      "passwordMaxLength": "Password must not exceed 64 characters",
+      "passwordUppercase": "Password must contain at least one uppercase letter",
+      "passwordLowercase": "Password must contain at least one lowercase letter",
+      "passwordSpecialChar": "Password must contain at least one special character",
+      "nameMinLength": "Name must be at least 2 characters",
+      "usernameMinLength": "Username must be at least 2 characters",
+      "passwordRequired": "Password is required",
+      "pinOnlyDigits": "PIN must contain only digits",
+      "pinExactLength": "PIN must be exactly 4 digits"
+    }
   }
 }

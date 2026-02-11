@@ -1,8 +1,4 @@
-export interface ApiError {
-  message: string;
-  status?: number;
-  data?: unknown;
-}
+export type { ApiError } from '@/shared/types/errors';
 
 export interface ApiResponse<T = unknown> {
   data: T;

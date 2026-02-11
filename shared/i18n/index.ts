@@ -14,7 +14,6 @@ const resources = {
   },
 };
 
-// eslint-disable-next-line import/no-named-as-default-member
 i18n.use(initReactI18next).init({
   resources,
   lng: 'en',
@@ -31,7 +30,6 @@ const changeLanguage = async (language: 'en' | 'ar'): Promise<void> => {
     I18nManager.forceRTL(isRTL);
     I18nManager.allowRTL(isRTL);
   }
-  // eslint-disable-next-line import/no-named-as-default-member
   await i18n.changeLanguage(language);
 };
 

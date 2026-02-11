@@ -1,1 +1,1 @@
-export {};
+export { usePin } from './use-pin';

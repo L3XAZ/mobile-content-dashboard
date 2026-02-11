@@ -1,12 +1,12 @@
 import axios, { AxiosInstance } from 'axios';
 
 import { setupInterceptors } from './interceptors';
+import { DUMMYJSON_BASE_URL, JSONPLACEHOLDER_BASE_URL } from './base-urls';
 
-const API_BASE_URL = 'https://dummyjson.com';
-const JSONPLACEHOLDER_BASE_URL = 'https://jsonplaceholder.typicode.com';
+export { DUMMYJSON_BASE_URL };
 
 export const apiClient: AxiosInstance = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: DUMMYJSON_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },

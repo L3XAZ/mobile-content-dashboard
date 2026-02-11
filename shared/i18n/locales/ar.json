@@ -3,5 +3,73 @@
     "loading": "جاري التحميل...",
     "error": "خطأ",
     "success": "نجاح"
+  },
+  "auth": {
+    "login": {
+      "title": "تسجيل الدخول",
+      "subtitle": "حساب شخصي",
+      "username": "اسم المستخدم",
+      "usernamePlaceholder": "أدخل اسم المستخدم",
+      "passwords": "كلمة المرور",
+      "passwordPlaceholder": "أدخل كلمة المرور",
+      "forgot": "نسيت؟",
+      "continue": "متابعة",
+      "noAccount": "ليس لديك حساب؟",
+      "createAccount": "إنشاء حساب",
+      "error": "خطأ: اسم المستخدم أو كلمة المرور غير صحيحة"
+    },
+    "signUp": {
+      "title": "إنشاء حساب",
+      "subtitle": "حساب شخصي",
+      "name": "الاسم",
+      "namePlaceholder": "أدخل اسمك",
+      "username": "اسم المستخدم",
+      "usernamePlaceholder": "أدخل اسم المستخدم",
+      "email": "البريد الإلكتروني",
+      "emailPlaceholder": "أدخل بريدك الإلكتروني",
+      "password": "كلمة المرور",
+      "passwordPlaceholder": "أنشئ كلمة مرور",
+      "continue": "متابعة",
+      "hasAccount": "لديك حساب بالفعل؟",
+      "signIn": "تسجيل الدخول",
+      "registrationFailed": "فشل التسجيل. يرجى المحاولة مرة أخرى."
+    },
+    "pin": {
+      "createTitle": "إنشاء رمز PIN",
+      "repeatTitle": "كرر رمز PIN",
+      "enterTitle": "أدخل رمز PIN",
+      "enterSubtitle": "أدخل الرمز المكون من 4 أرقام:",
+      "createSubtitle": "أدخل الرمز المكون من 4 أرقام:",
+      "continue": "متابعة",
+      "changeAccount": "تغيير الحساب",
+      "userNotFound": "لم يتم العثور على المستخدم. يرجى المحاولة مرة أخرى.",
+      "pinSaveFailed": "فشل حفظ رمز PIN. يرجى المحاولة مرة أخرى.",
+      "pinMismatch": "رموز PIN غير متطابقة. يرجى المحاولة مرة أخرى.",
+      "invalidPin": "رمز PIN غير صحيح. يرجى المحاولة مرة أخرى.",
+      "errorOccurred": "حدث خطأ. يرجى المحاولة مرة أخرى."
+    },
+    "welcome": {
+      "title": "مرحباً",
+      "subtitle": "اختر فئة الاستثمار الخاصة بك وابدأ رحلتك",
+      "bitcoin": "البيتكوين",
+      "etfs": "صناديق الاستثمار المتداولة",
+      "crowdLending": "الإقراض الجماعي",
+      "commodities": "السلع",
+      "signIn": "تسجيل الدخول",
+      "signUp": "إنشاء حساب"
+    },
+    "validation": {
+      "emailInvalid": "عنوان البريد الإلكتروني غير صحيح",
+      "passwordMinLength": "يجب أن تكون كلمة المرور 8 أحرف على الأقل",
+      "passwordMaxLength": "يجب ألا تتجاوز كلمة المرور 64 حرفاً",
+      "passwordUppercase": "يجب أن تحتوي كلمة المرور على حرف كبير واحد على الأقل",
+      "passwordLowercase": "يجب أن تحتوي كلمة المرور على حرف صغير واحد على الأقل",
+      "passwordSpecialChar": "يجب أن تحتوي كلمة المرور على حرف خاص واحد على الأقل",
+      "nameMinLength": "يجب أن يكون الاسم حرفين على الأقل",
+      "usernameMinLength": "يجب أن يكون اسم المستخدم حرفين على الأقل",
+      "passwordRequired": "كلمة المرور مطلوبة",
+      "pinOnlyDigits": "يجب أن يحتوي رمز PIN على أرقام فقط",
+      "pinExactLength": "يجب أن يكون رمز PIN 4 أرقام بالضبط"
+    }
   }
 }

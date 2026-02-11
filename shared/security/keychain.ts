@@ -1,151 +1,150 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Keychain from 'react-native-keychain';
 
 const PIN_SERVICE = 'pin';
-const TOKEN_SERVICE = 'token';
-
-export const getPin = async (): Promise<string | null> => {
-  try {
-    const credentials = await Keychain.getGenericPassword({
-      service: PIN_SERVICE,
-    });
-    return credentials ? credentials.password : null;
-  } catch {
-    return null;
-  }
-};
-
-export const setPin = async (pin: string): Promise<void> => {
-  try {
-    await Keychain.setGenericPassword(PIN_SERVICE, pin, {
-      service: PIN_SERVICE,
-    });
-  } catch (error) {
-    throw new Error(`Failed to save PIN: ${error}`);
-  }
-};
-
-export const deletePin = async (): Promise<void> => {
-  try {
-    await Keychain.resetGenericPassword({
-      service: PIN_SERVICE,
-    });
-  } catch (error) {
-    throw new Error(`Failed to delete PIN: ${error}`);
-  }
-};
-
 const ACCESS_TOKEN_SERVICE = 'accessToken';
 const REFRESH_TOKEN_SERVICE = 'refreshToken';
 
-export const getAccessToken = async (): Promise<string | null> => {
+const ERROR_SAVE_PIN = 'Failed to save PIN';
+const ERROR_DELETE_PIN = 'Failed to delete PIN';
+const ERROR_SAVE_ACCESS_TOKEN = 'Failed to save access token';
+const ERROR_DELETE_ACCESS_TOKEN = 'Failed to delete access token';
+const ERROR_SAVE_REFRESH_TOKEN = 'Failed to save refresh token';
+const ERROR_DELETE_REFRESH_TOKEN = 'Failed to delete refresh token';
+
+const isKeychainAvailable = (): boolean => {
   try {
-    const credentials = await Keychain.getGenericPassword({
-      service: ACCESS_TOKEN_SERVICE,
-    });
-    return credentials ? credentials.password : null;
+    return (
+      Keychain !== null &&
+      Keychain !== undefined &&
+      typeof Keychain.setGenericPassword === 'function'
+    );
+  } catch {
+    return false;
+  }
+};
+
+const getSecureValue = async (service: string): Promise<string | null> => {
+  if (isKeychainAvailable()) {
+    try {
+      const credentials = await Keychain.getGenericPassword({
+        service,
+      });
+      return credentials ? credentials.password : null;
+    } catch {
+      try {
+        return await AsyncStorage.getItem(service);
+      } catch {
+        return null;
+      }
+    }
+  }
+
+  try {
+    return await AsyncStorage.getItem(service);
   } catch {
     return null;
   }
+};
+
+const setSecureValue = async (
+  service: string,
+  value: string,
+  username: string,
+  errorMessage: string
+): Promise<void> => {
+  if (isKeychainAvailable()) {
+    try {
+      try {
+        await Keychain.resetGenericPassword({
+          service,
+        });
+      } catch {}
+      await Keychain.setGenericPassword(username, value, {
+        service,
+      });
+      return;
+    } catch {
+      try {
+        await AsyncStorage.setItem(service, value);
+        return;
+      } catch (error) {
+        throw new Error(`${errorMessage}: ${error}`);
+      }
+    }
+  }
+
+  try {
+    await AsyncStorage.setItem(service, value);
+  } catch (error) {
+    throw new Error(`${errorMessage}: ${error}`);
+  }
+};
+
+const deleteSecureValue = async (service: string, errorMessage: string): Promise<void> => {
+  if (isKeychainAvailable()) {
+    try {
+      await Keychain.resetGenericPassword({
+        service,
+      });
+      return;
+    } catch {
+      try {
+        await AsyncStorage.removeItem(service);
+        return;
+      } catch (error) {
+        throw new Error(`${errorMessage}: ${error}`);
+      }
+    }
+  }
+
+  try {
+    await AsyncStorage.removeItem(service);
+  } catch (error) {
+    throw new Error(`${errorMessage}: ${error}`);
+  }
+};
+
+export const getPin = async (userId: string | number): Promise<string | null> => {
+  const key = `${PIN_SERVICE}_${userId}`;
+  return getSecureValue(key);
+};
+
+export const setPin = async (pin: string, userId: string | number): Promise<void> => {
+  const key = `${PIN_SERVICE}_${userId}`;
+  return setSecureValue(key, pin, 'pin_user', ERROR_SAVE_PIN);
+};
+
+export const deletePin = async (userId: string | number): Promise<void> => {
+  const key = `${PIN_SERVICE}_${userId}`;
+  return deleteSecureValue(key, ERROR_DELETE_PIN);
+};
+
+export const getAccessToken = async (): Promise<string | null> => {
+  return getSecureValue(ACCESS_TOKEN_SERVICE);
 };
 
 export const setAccessToken = async (token: string): Promise<void> => {
-  try {
-    await Keychain.setGenericPassword(ACCESS_TOKEN_SERVICE, token, {
-      service: ACCESS_TOKEN_SERVICE,
-    });
-  } catch (error) {
-    throw new Error(`Failed to save access token: ${error}`);
-  }
+  return setSecureValue(ACCESS_TOKEN_SERVICE, token, 'access_token_user', ERROR_SAVE_ACCESS_TOKEN);
 };
 
 export const deleteAccessToken = async (): Promise<void> => {
-  try {
-    await Keychain.resetGenericPassword({
-      service: ACCESS_TOKEN_SERVICE,
-    });
-  } catch (error) {
-    throw new Error(`Failed to delete access token: ${error}`);
-  }
+  return deleteSecureValue(ACCESS_TOKEN_SERVICE, ERROR_DELETE_ACCESS_TOKEN);
 };
 
 export const getRefreshToken = async (): Promise<string | null> => {
-  try {
-    const credentials = await Keychain.getGenericPassword({
-      service: REFRESH_TOKEN_SERVICE,
-    });
-    return credentials ? credentials.password : null;
-  } catch {
-    return null;
-  }
+  return getSecureValue(REFRESH_TOKEN_SERVICE);
 };
 
 export const setRefreshToken = async (token: string): Promise<void> => {
-  try {
-    await Keychain.setGenericPassword(REFRESH_TOKEN_SERVICE, token, {
-      service: REFRESH_TOKEN_SERVICE,
-    });
-  } catch (error) {
-    throw new Error(`Failed to save refresh token: ${error}`);
-  }
+  return setSecureValue(
+    REFRESH_TOKEN_SERVICE,
+    token,
+    'refresh_token_user',
+    ERROR_SAVE_REFRESH_TOKEN
+  );
 };
 
 export const deleteRefreshToken = async (): Promise<void> => {
-  try {
-    await Keychain.resetGenericPassword({
-      service: REFRESH_TOKEN_SERVICE,
-    });
-  } catch (error) {
-    throw new Error(`Failed to delete refresh token: ${error}`);
-  }
-};
-
-export const getToken = async (): Promise<string | null> => {
-  try {
-    const credentials = await Keychain.getGenericPassword({
-      service: TOKEN_SERVICE,
-    });
-    return credentials ? credentials.password : null;
-  } catch {
-    return null;
-  }
-};
-
-export const setToken = async (token: string): Promise<void> => {
-  try {
-    await Keychain.setGenericPassword(TOKEN_SERVICE, token, {
-      service: TOKEN_SERVICE,
-    });
-  } catch (error) {
-    throw new Error(`Failed to save token: ${error}`);
-  }
-};
-
-export const deleteToken = async (): Promise<void> => {
-  try {
-    await Keychain.resetGenericPassword({
-      service: TOKEN_SERVICE,
-    });
-  } catch (error) {
-    throw new Error(`Failed to delete token: ${error}`);
-  }
-};
-
-export const clearAll = async (): Promise<void> => {
-  try {
-    await Keychain.resetGenericPassword();
-    await Keychain.resetGenericPassword({
-      service: PIN_SERVICE,
-    });
-    await Keychain.resetGenericPassword({
-      service: TOKEN_SERVICE,
-    });
-    await Keychain.resetGenericPassword({
-      service: ACCESS_TOKEN_SERVICE,
-    });
-    await Keychain.resetGenericPassword({
-      service: REFRESH_TOKEN_SERVICE,
-    });
-  } catch (error) {
-    throw new Error(`Failed to clear all: ${error}`);
-  }
+  return deleteSecureValue(REFRESH_TOKEN_SERVICE, ERROR_DELETE_REFRESH_TOKEN);
 };
