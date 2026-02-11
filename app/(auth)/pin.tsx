@@ -1,14 +1,20 @@
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useCallback, useEffect, useState } from 'react';
-import { ActivityIndicator, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
+import {
+  useBiometricsAvailability,
+  useBiometricType,
+  useBiometricsEnabled,
+} from '@/features/biometrics/hooks';
 import { useAuth } from '@/features/auth/hooks';
 import { selectUser } from '@/features/auth/store';
 import { usePin } from '@/features/pin/hooks';
 import { COLORS, PIN_LENGTH } from '@/shared/constants';
 import { useTranslation } from '@/shared/i18n';
+import { authenticateWithBiometrics, getPin } from '@/shared/security';
 import { PinScreenSearchParams } from '@/shared/types/navigation';
 
 type PinMode = 'create' | 'enter';
@@ -35,6 +41,14 @@ export default function PinScreen() {
   const [pin, setPinValue] = useState('');
   const [firstPin, setFirstPin] = useState('');
   const [createStep, setCreateStep] = useState<CreateStep>('create');
+  const hasTriedBiometricsRef = useRef(false);
+
+  const { isAvailable: isBiometricsAvailable, isLoading: isAvailabilityLoading } =
+    useBiometricsAvailability(user?.id ?? null);
+  const { type: biometricType } = useBiometricType();
+  const { enabled: biometricsEnabled, isLoading: isEnabledLoading } = useBiometricsEnabled(
+    user?.id ?? null
+  );
 
   const { handleContinue, error, isLoading, isProcessing } = usePin(
     { pinMode, user },
@@ -46,15 +60,54 @@ export default function PinScreen() {
     }
   );
 
-  const handleContinueClick = () => {
-    handleContinue(pin, firstPin, createStep);
-  };
-
   useEffect(() => {
     if (pin.length === PIN_LENGTH && !isProcessing && !isLoading) {
       handleContinue(pin, firstPin, createStep);
     }
   }, [pin, firstPin, createStep, isProcessing, isLoading, handleContinue]);
+
+  const handleBiometricAuth = useCallback(async () => {
+    if (!user?.id) {
+      return;
+    }
+    const success = await authenticateWithBiometrics();
+    if (success) {
+      try {
+        const savedPin = await getPin(user.id.toString());
+        if (savedPin) {
+          handleContinue(savedPin, '', 'repeat');
+        }
+      } catch {}
+    }
+  }, [user?.id, handleContinue]);
+
+  const handleBiometricAuthRef = useRef(handleBiometricAuth);
+
+  useEffect(() => {
+    handleBiometricAuthRef.current = handleBiometricAuth;
+  }, [handleBiometricAuth]);
+
+  useEffect(() => {
+    if (
+      pinMode === 'enter' &&
+      biometricsEnabled === true &&
+      isBiometricsAvailable === true &&
+      !hasTriedBiometricsRef.current &&
+      !isAvailabilityLoading &&
+      !isEnabledLoading &&
+      user?.id
+    ) {
+      handleBiometricAuthRef.current();
+      hasTriedBiometricsRef.current = true;
+    }
+  }, [
+    pinMode,
+    biometricsEnabled,
+    isBiometricsAvailable,
+    isAvailabilityLoading,
+    isEnabledLoading,
+    user?.id,
+  ]);
 
   const handleDigitPress = useCallback(
     (digit: string) => {
@@ -222,20 +275,21 @@ export default function PinScreen() {
 
         {renderKeypad()}
 
-        <TouchableOpacity
-          className={`bg-primary rounded-2xl py-4 items-center justify-center ${
-            (pin.length !== PIN_LENGTH || isLoading) && 'opacity-50'
-          }`}
-          onPress={handleContinueClick}
-          disabled={pin.length !== PIN_LENGTH || isLoading}
-          activeOpacity={0.8}
-        >
-          {isLoading ? (
-            <ActivityIndicator color={COLORS['base-white']} />
-          ) : (
-            <Text className="text-base-white text-lg font-semibold">{t('auth.pin.continue')}</Text>
-          )}
-        </TouchableOpacity>
+        {pinMode === 'enter' && biometricsEnabled === true && isBiometricsAvailable === true && (
+          <TouchableOpacity
+            className="bg-primary rounded-2xl py-4 items-center justify-center"
+            onPress={handleBiometricAuth}
+            activeOpacity={0.8}
+          >
+            <Text className="text-base-white text-lg font-semibold">
+              {biometricType === 'faceid'
+                ? t('auth.pin.useFaceId')
+                : biometricType === 'fingerprint'
+                  ? t('auth.pin.useFingerprint')
+                  : t('auth.pin.useBiometrics')}
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
     </ScrollView>
   );

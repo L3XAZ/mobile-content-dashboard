@@ -46,7 +46,16 @@
       "pinSaveFailed": "فشل حفظ رمز PIN. يرجى المحاولة مرة أخرى.",
       "pinMismatch": "رموز PIN غير متطابقة. يرجى المحاولة مرة أخرى.",
       "invalidPin": "رمز PIN غير صحيح. يرجى المحاولة مرة أخرى.",
-      "errorOccurred": "حدث خطأ. يرجى المحاولة مرة أخرى."
+      "errorOccurred": "حدث خطأ. يرجى المحاولة مرة أخرى.",
+      "useFaceId": "استخدم Face ID",
+      "useFingerprint": "استخدم البصمة",
+      "useBiometrics": "استخدم القياسات الحيوية",
+      "enableBiometricsTitle": "تفعيل القياسات الحيوية؟",
+      "enableBiometricsMessage": "يمكنك استخدام القياسات الحيوية لتسجيل الدخول بشكل أسرع.",
+      "enableBiometricsEnable": "تفعيل",
+      "enableBiometricsNotNow": "ليس الآن",
+      "biometricsNotAvailable": "القياسات الحيوية غير متاحة",
+      "biometricsError": "فشل المصادقة البيومترية"
     },
     "welcome": {
       "title": "مرحباً",

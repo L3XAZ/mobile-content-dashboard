@@ -46,7 +46,16 @@
       "pinSaveFailed": "Failed to save PIN. Please try again.",
       "pinMismatch": "PIN codes do not match. Please try again.",
       "invalidPin": "Invalid PIN. Please try again.",
-      "errorOccurred": "An error occurred. Please try again."
+      "errorOccurred": "An error occurred. Please try again.",
+      "useFaceId": "Use Face ID",
+      "useFingerprint": "Use Fingerprint",
+      "useBiometrics": "Use Biometrics",
+      "enableBiometricsTitle": "Enable Biometrics?",
+      "enableBiometricsMessage": "You can use biometrics to log in faster.",
+      "enableBiometricsEnable": "Enable",
+      "enableBiometricsNotNow": "Not now",
+      "biometricsNotAvailable": "Biometrics not available",
+      "biometricsError": "Biometric authentication failed"
     },
     "welcome": {
       "title": "Welcome",

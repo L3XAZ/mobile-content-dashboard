@@ -1,10 +1,11 @@
 import { useRouter } from 'expo-router';
-import { useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
+import { Alert } from 'react-native';
 
 import { User } from '@/features/auth/types';
 import { PIN_LENGTH } from '@/shared/constants';
 import i18n from '@/shared/i18n';
-import { getPin, setPin } from '@/shared/security';
+import { getPin, isBiometricsAvailable, setBiometricsEnabled, setPin } from '@/shared/security';
 
 type PinMode = 'create' | 'enter';
 type CreateStep = 'create' | 'repeat';
@@ -27,6 +28,7 @@ export const usePin = ({ pinMode, user }: UsePinParams, callbacks: UsePinCallbac
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
+  const hasShownBiometricsAlertRef = useRef(false);
 
   const handleContinue = useCallback(
     async (pin: string, firstPin: string, createStep: CreateStep) => {
@@ -44,6 +46,7 @@ export const usePin = ({ pinMode, user }: UsePinParams, callbacks: UsePinCallbac
             callbacks.onFirstPinSet(pin);
             callbacks.onPinReset();
             callbacks.onStepChange('repeat');
+            hasShownBiometricsAlertRef.current = false;
           } else {
             if (pin === firstPin) {
               if (!user?.id) {
@@ -56,7 +59,32 @@ export const usePin = ({ pinMode, user }: UsePinParams, callbacks: UsePinCallbac
               }
               try {
                 await setPin(pin, user.id.toString());
-                router.replace('/(tabs)');
+                const biometricsAvailable = await isBiometricsAvailable();
+                if (biometricsAvailable && !hasShownBiometricsAlertRef.current) {
+                  hasShownBiometricsAlertRef.current = true;
+                  Alert.alert(
+                    i18n.t('auth.pin.enableBiometricsTitle'),
+                    i18n.t('auth.pin.enableBiometricsMessage'),
+                    [
+                      {
+                        text: i18n.t('auth.pin.enableBiometricsNotNow'),
+                        style: 'cancel',
+                        onPress: () => {
+                          router.replace('/(tabs)');
+                        },
+                      },
+                      {
+                        text: i18n.t('auth.pin.enableBiometricsEnable'),
+                        onPress: async () => {
+                          await setBiometricsEnabled(user.id.toString(), true);
+                          router.replace('/(tabs)');
+                        },
+                      },
+                    ]
+                  );
+                } else {
+                  router.replace('/(tabs)');
+                }
               } catch {
                 const errorMessage = i18n.t('auth.pin.pinSaveFailed');
                 setError(errorMessage);
