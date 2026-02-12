@@ -1,7 +1,11 @@
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Tabs } from 'expo-router';
 
+import { useTranslation } from '@/shared/i18n';
+
 export default function TabLayout() {
+  const { t } = useTranslation();
+
   return (
     <Tabs
       screenOptions={{
@@ -12,29 +16,29 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
+          title: t('tabs.home'),
           tabBarIcon: ({ color }) => <MaterialIcons name="home" size={28} color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="search"
-        options={{
-          title: 'Search',
-          tabBarIcon: ({ color }) => <MaterialIcons name="search" size={28} color={color} />,
         }}
       />
       <Tabs.Screen
         name="portfolio"
         options={{
-          title: 'Portfolio',
+          title: t('tabs.portfolio'),
           tabBarIcon: ({ color }) => <MaterialIcons name="pie-chart" size={28} color={color} />,
         }}
       />
       <Tabs.Screen
-        name="profile"
+        name="search"
         options={{
-          title: 'Profile',
-          tabBarIcon: ({ color }) => <MaterialIcons name="person" size={28} color={color} />,
+          title: t('tabs.search'),
+          tabBarIcon: ({ color }) => <MaterialIcons name="search" size={28} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="settings"
+        options={{
+          title: t('tabs.settings'),
+          tabBarIcon: ({ color }) => <MaterialIcons name="settings" size={28} color={color} />,
         }}
       />
     </Tabs>

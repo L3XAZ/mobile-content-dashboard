@@ -2,22 +2,34 @@
   "common": {
     "loading": "Loading...",
     "error": "Error",
-    "success": "Success"
+    "success": "Success",
+    "back": "Back",
+    "noResults": "No results",
+    "notAvailable": "Not available"
   },
+
+  "tabs": {
+    "home": "Home",
+    "portfolio": "Portfolio",
+    "search": "Search",
+    "settings": "Settings"
+  },
+
   "auth": {
     "login": {
       "title": "Login",
       "subtitle": "Personal Account",
       "username": "Username",
       "usernamePlaceholder": "Enter your username",
-      "passwords": "Passwords",
+      "password": "Password",
       "passwordPlaceholder": "Enter your password",
       "forgot": "Forgot?",
       "continue": "Continue",
       "noAccount": "Don't have an account?",
       "createAccount": "Create Account",
-      "error": "Error: Invalid Username or Password"
+      "error": "Invalid username or password"
     },
+
     "signUp": {
       "title": "Sign up",
       "subtitle": "Personal Account",
@@ -34,29 +46,26 @@
       "signIn": "Sign In",
       "registrationFailed": "Registration failed. Please try again."
     },
+
     "pin": {
-      "createTitle": "Create a Pin code",
-      "repeatTitle": "Repeat a Pin code",
-      "enterTitle": "Enter Pin code",
-      "enterSubtitle": "Enter 4 digit code:",
-      "createSubtitle": "enter 4 digit code:",
-      "continue": "Continue",
-      "changeAccount": "Change Account",
-      "userNotFound": "User not found. Please try again.",
-      "pinSaveFailed": "Failed to save PIN. Please try again.",
-      "pinMismatch": "PIN codes do not match. Please try again.",
+      "createTitle": "Create a PIN code",
+      "repeatTitle": "Repeat PIN code",
+      "enterTitle": "Enter PIN code",
+      "enterSubtitle": "Enter 4-digit code",
+      "createSubtitle": "Enter 4-digit code",
+      "changeAccount": "Change account",
       "invalidPin": "Invalid PIN. Please try again.",
-      "errorOccurred": "An error occurred. Please try again.",
+      "pinMismatch": "PIN codes do not match.",
+      "userNotFound": "User not found.",
+      "enableBiometricsTitle": "Enable biometrics?",
+      "enableBiometricsMessage": "You can use biometrics to log in faster.",
+      "enable": "Enable",
+      "notNow": "Not now",
       "useFaceId": "Use Face ID",
       "useFingerprint": "Use Fingerprint",
-      "useBiometrics": "Use Biometrics",
-      "enableBiometricsTitle": "Enable Biometrics?",
-      "enableBiometricsMessage": "You can use biometrics to log in faster.",
-      "enableBiometricsEnable": "Enable",
-      "enableBiometricsNotNow": "Not now",
-      "biometricsNotAvailable": "Biometrics not available",
-      "biometricsError": "Biometric authentication failed"
+      "useBiometrics": "Use Biometrics"
     },
+
     "welcome": {
       "title": "Welcome",
       "subtitle": "Choose your investment category and start your journey",
@@ -67,6 +76,7 @@
       "signIn": "Sign In",
       "signUp": "Sign up"
     },
+
     "validation": {
       "emailInvalid": "Invalid email address",
       "passwordMinLength": "Password must be at least 8 characters",
@@ -76,9 +86,66 @@
       "passwordSpecialChar": "Password must contain at least one special character",
       "nameMinLength": "Name must be at least 2 characters",
       "usernameMinLength": "Username must be at least 2 characters",
-      "passwordRequired": "Password is required",
-      "pinOnlyDigits": "PIN must contain only digits",
-      "pinExactLength": "PIN must be exactly 4 digits"
+      "passwordRequired": "Password is required"
     }
+  },
+
+  "home": {
+    "yourName": "Your name",
+
+    "testTask": {
+      "title": "Test task",
+      "subtitle": "Lorem ipsum",
+      "action": "Go to call"
+    },
+
+    "beforeYouStart": {
+      "title": "Before you start",
+      "bank": {
+        "title": "Link your bank account",
+        "steps": "2 steps"
+      },
+      "wallet": {
+        "title": "Add wallet",
+        "steps": "3 steps"
+      }
+    },
+
+    "posts": "Posts"
+  },
+
+  "search": {
+    "title": "Search",
+    "placeholder": "Search posts...",
+    "postId": "ID: {{id}}",
+    "postName": "Name: {{title}}",
+    "empty": "No results"
+  },
+
+  "post": {
+    "comments": "Comments",
+    "invalidId": "Invalid post id",
+    "failedToLoad": "Failed to load post",
+    "commentsError": "Failed to load comments",
+    "goBack": "Go back"
+  },
+  
+  "portfolio": {
+    "title": "Portfolio",
+    "empty": "Your portfolio data will appear here."
+  },
+
+  "settings": {
+    "title": "Settings",
+    "basic": "Basic",
+    "other": "Other",
+    "language": "Language",
+    "logout": "Log out"
+  },
+
+  "language": {
+    "title": "Language",
+    "english": "English",
+    "arabic": "Arabic"
   }
 }

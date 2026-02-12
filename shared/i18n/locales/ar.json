@@ -2,22 +2,34 @@
   "common": {
     "loading": "جاري التحميل...",
     "error": "خطأ",
-    "success": "نجاح"
+    "success": "نجاح",
+    "back": "رجوع",
+    "noResults": "لا توجد نتائج",
+    "notAvailable": "غير متوفر"
   },
+
+  "tabs": {
+    "home": "الرئيسية",
+    "portfolio": "المحفظة",
+    "search": "بحث",
+    "settings": "الإعدادات"
+  },
+
   "auth": {
     "login": {
       "title": "تسجيل الدخول",
       "subtitle": "حساب شخصي",
       "username": "اسم المستخدم",
       "usernamePlaceholder": "أدخل اسم المستخدم",
-      "passwords": "كلمة المرور",
+      "password": "كلمة المرور",
       "passwordPlaceholder": "أدخل كلمة المرور",
       "forgot": "نسيت؟",
       "continue": "متابعة",
       "noAccount": "ليس لديك حساب؟",
       "createAccount": "إنشاء حساب",
-      "error": "خطأ: اسم المستخدم أو كلمة المرور غير صحيحة"
+      "error": "اسم المستخدم أو كلمة المرور غير صحيحة"
     },
+
     "signUp": {
       "title": "إنشاء حساب",
       "subtitle": "حساب شخصي",
@@ -32,53 +44,108 @@
       "continue": "متابعة",
       "hasAccount": "لديك حساب بالفعل؟",
       "signIn": "تسجيل الدخول",
-      "registrationFailed": "فشل التسجيل. يرجى المحاولة مرة أخرى."
+      "registrationFailed": "فشل التسجيل. حاول مرة أخرى."
     },
+
     "pin": {
       "createTitle": "إنشاء رمز PIN",
-      "repeatTitle": "كرر رمز PIN",
+      "repeatTitle": "تأكيد رمز PIN",
       "enterTitle": "أدخل رمز PIN",
-      "enterSubtitle": "أدخل الرمز المكون من 4 أرقام:",
-      "createSubtitle": "أدخل الرمز المكون من 4 أرقام:",
-      "continue": "متابعة",
+      "enterSubtitle": "أدخل رمزًا مكونًا من 4 أرقام",
+      "createSubtitle": "أدخل رمزًا مكونًا من 4 أرقام",
       "changeAccount": "تغيير الحساب",
-      "userNotFound": "لم يتم العثور على المستخدم. يرجى المحاولة مرة أخرى.",
-      "pinSaveFailed": "فشل حفظ رمز PIN. يرجى المحاولة مرة أخرى.",
-      "pinMismatch": "رموز PIN غير متطابقة. يرجى المحاولة مرة أخرى.",
-      "invalidPin": "رمز PIN غير صحيح. يرجى المحاولة مرة أخرى.",
-      "errorOccurred": "حدث خطأ. يرجى المحاولة مرة أخرى.",
+      "invalidPin": "رمز PIN غير صحيح",
+      "pinMismatch": "رموز PIN غير متطابقة",
+      "userNotFound": "المستخدم غير موجود",
+      "enableBiometricsTitle": "تفعيل القياسات الحيوية؟",
+      "enableBiometricsMessage": "يمكنك تسجيل الدخول بسرعة باستخدام القياسات الحيوية",
+      "enable": "تفعيل",
+      "notNow": "ليس الآن",
       "useFaceId": "استخدم Face ID",
       "useFingerprint": "استخدم البصمة",
-      "useBiometrics": "استخدم القياسات الحيوية",
-      "enableBiometricsTitle": "تفعيل القياسات الحيوية؟",
-      "enableBiometricsMessage": "يمكنك استخدام القياسات الحيوية لتسجيل الدخول بشكل أسرع.",
-      "enableBiometricsEnable": "تفعيل",
-      "enableBiometricsNotNow": "ليس الآن",
-      "biometricsNotAvailable": "القياسات الحيوية غير متاحة",
-      "biometricsError": "فشل المصادقة البيومترية"
+      "useBiometrics": "استخدم القياسات الحيوية"
     },
+
     "welcome": {
       "title": "مرحباً",
-      "subtitle": "اختر فئة الاستثمار الخاصة بك وابدأ رحلتك",
-      "bitcoin": "البيتكوين",
-      "etfs": "صناديق الاستثمار المتداولة",
+      "subtitle": "اختر فئة الاستثمار وابدأ رحلتك",
+      "bitcoin": "بيتكوين",
+      "etfs": "صناديق ETF",
       "crowdLending": "الإقراض الجماعي",
       "commodities": "السلع",
       "signIn": "تسجيل الدخول",
       "signUp": "إنشاء حساب"
     },
+
     "validation": {
-      "emailInvalid": "عنوان البريد الإلكتروني غير صحيح",
-      "passwordMinLength": "يجب أن تكون كلمة المرور 8 أحرف على الأقل",
-      "passwordMaxLength": "يجب ألا تتجاوز كلمة المرور 64 حرفاً",
+      "emailInvalid": "البريد الإلكتروني غير صالح",
+      "passwordMinLength": "يجب أن تحتوي كلمة المرور على 8 أحرف على الأقل",
+      "passwordMaxLength": "يجب ألا تتجاوز كلمة المرور 64 حرفًا",
       "passwordUppercase": "يجب أن تحتوي كلمة المرور على حرف كبير واحد على الأقل",
       "passwordLowercase": "يجب أن تحتوي كلمة المرور على حرف صغير واحد على الأقل",
-      "passwordSpecialChar": "يجب أن تحتوي كلمة المرور على حرف خاص واحد على الأقل",
-      "nameMinLength": "يجب أن يكون الاسم حرفين على الأقل",
-      "usernameMinLength": "يجب أن يكون اسم المستخدم حرفين على الأقل",
-      "passwordRequired": "كلمة المرور مطلوبة",
-      "pinOnlyDigits": "يجب أن يحتوي رمز PIN على أرقام فقط",
-      "pinExactLength": "يجب أن يكون رمز PIN 4 أرقام بالضبط"
+      "passwordSpecialChar": "يجب أن تحتوي كلمة المرور على رمز خاص",
+      "nameMinLength": "يجب أن يحتوي الاسم على حرفين على الأقل",
+      "usernameMinLength": "يجب أن يحتوي اسم المستخدم على حرفين على الأقل",
+      "passwordRequired": "كلمة المرور مطلوبة"
     }
+  },
+
+  "home": {
+    "yourName": "اسمك",
+
+    "testTask": {
+      "title": "مهمة تجريبية",
+      "subtitle": "وصف مختصر",
+      "action": "الانتقال إلى المكالمة"
+    },
+
+    "beforeYouStart": {
+      "title": "قبل أن تبدأ",
+      "bank": {
+        "title": "ربط الحساب البنكي",
+        "steps": "خطوتان"
+      },
+      "wallet": {
+        "title": "إضافة محفظة",
+        "steps": "3 خطوات"
+      }
+    },
+
+    "posts": "المنشورات"
+  },
+
+  "search": {
+    "title": "بحث",
+    "placeholder": "ابحث عن المنشورات...",
+    "postId": "المعرف: {{id}}",
+    "postName": "الاسم: {{title}}",
+    "empty": "لا توجد نتائج"
+  },
+
+  "post": {
+    "comments": "Comments",
+    "invalidId": "Invalid post id",
+    "failedToLoad": "Failed to load post",
+    "commentsError": "Failed to load comments",
+    "goBack": "Go back"
+  },
+  
+  "portfolio": {
+    "title": "المحفظة",
+    "empty": "ستظهر بيانات محفظتك هنا."
+  },
+
+  "settings": {
+    "title": "الإعدادات",
+    "basic": "أساسي",
+    "other": "أخرى",
+    "language": "اللغة",
+    "logout": "تسجيل الخروج"
+  },
+
+  "language": {
+    "title": "اللغة",
+    "english": "الإنجليزية",
+    "arabic": "العربية"
   }
 }

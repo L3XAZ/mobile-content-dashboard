@@ -92,7 +92,7 @@ export default function LoginScreen() {
         </FormField>
 
         <FormField
-          label={t('auth.login.passwords')}
+          label={t('auth.login.password')}
           error={errors.password?.message}
           showErrorIcon={false}
           labelRight={
