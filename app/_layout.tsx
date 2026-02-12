@@ -13,10 +13,6 @@ import { AuthGuard } from '@/shared/navigation/AuthGuard';
 import { queryClient } from '@/shared/query';
 import { persistor, store } from '@/shared/store';
 
-export const unstable_settings = {
-  anchor: '(tabs)',
-};
-
 export default function RootLayout() {
   const colorScheme = useColorScheme();
 
@@ -28,6 +24,7 @@ export default function RootLayout() {
             <AuthGuard>
               <View className="flex-1">
                 <Stack>
+                  <Stack.Screen name="index" options={{ headerShown: false }} />
                   <Stack.Screen name="(auth)" options={{ headerShown: false }} />
                   <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
                 </Stack>
