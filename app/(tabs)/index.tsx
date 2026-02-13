@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import { selectUser } from '@/features/auth/store';
 import { Post, usePosts } from '@/features/posts';
 import { useTranslation } from '@/shared/i18n';
-import { ContentCard } from '@/shared/ui/cards/ContentCard';
+import { ContentCard } from '@/shared/ui';
 
 export default function HomeScreen() {
   const router = useRouter();

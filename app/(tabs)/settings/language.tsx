@@ -4,7 +4,7 @@ import { Pressable, Text, View } from 'react-native';
 
 import { COLORS } from '@/shared/constants';
 import { changeLanguage, useTranslation } from '@/shared/i18n';
-import { BackButton } from '@/shared/ui/navigation/BackButton';
+import { BackButton } from '@/shared/ui';
 
 type LanguageCode = 'en' | 'ar';
 

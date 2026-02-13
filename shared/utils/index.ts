@@ -1,2 +1,2 @@
-export { extractApiErrorMessage, extractApiError } from './error-handler';
+export { extractApiErrorMessage } from './error-handler';
 export { parseName } from './parse-name';

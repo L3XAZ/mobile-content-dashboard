@@ -119,9 +119,7 @@ export const usePin = ({ pinMode, user }: UsePinParams, callbacks: UsePinCallbac
           }
         }
       } catch (error) {
-        setError(
-          error instanceof Error ? error.message : i18n.t('auth.pin.errorOccurred')
-        );
+        setError(error instanceof Error ? error.message : i18n.t('auth.pin.errorOccurred'));
 
         if (pinMode === 'create' && createStep === 'repeat') {
           callbacks.onPinReset();

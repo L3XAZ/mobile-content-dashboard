@@ -6,8 +6,7 @@ import { ActivityIndicator, Pressable, ScrollView, Text, View } from 'react-nati
 import { usePost, usePostComments } from '@/features/posts';
 import { useTranslation } from '@/shared/i18n';
 import { safeGoBack } from '@/shared/navigation/safe-navigation';
-import { ContentCard } from '@/shared/ui/cards/ContentCard';
-import { BackButton } from '@/shared/ui/navigation/BackButton';
+import { BackButton, ContentCard } from '@/shared/ui';
 
 const POST_ILLUSTRATION: ImageSourcePropType =
   require('@/assets/images/post-illustration.png') as ImageSourcePropType;

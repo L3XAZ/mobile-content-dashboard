@@ -7,7 +7,7 @@ import { useAuth } from '@/features/auth/hooks';
 import { selectUser } from '@/features/auth/store';
 import { COLORS } from '@/shared/constants';
 import { useTranslation } from '@/shared/i18n';
-import { BackButton } from '@/shared/ui/navigation/BackButton';
+import { BackButton } from '@/shared/ui';
 
 export default function SettingsScreen() {
   const router = useRouter();

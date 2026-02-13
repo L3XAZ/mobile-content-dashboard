@@ -4,11 +4,11 @@ import { useMemo, useState } from 'react';
 import { ScrollView, Text, TextInput, View } from 'react-native';
 
 import { Post, usePosts } from '@/features/posts';
+import { COLORS } from '@/shared/constants';
 import { useDebounce } from '@/shared/hooks/use-debounce';
 import { useTranslation } from '@/shared/i18n';
 import { safeGoBack } from '@/shared/navigation/safe-navigation';
-import { ContentCard } from '@/shared/ui/cards/ContentCard';
-import { BackButton } from '@/shared/ui/navigation/BackButton';
+import { BackButton, ContentCard } from '@/shared/ui';
 
 export default function SearchScreen() {
   const router = useRouter();
@@ -40,14 +40,17 @@ export default function SearchScreen() {
             <Text className="text-2xl font-bold text-base-black ms-3">{t('search.title')}</Text>
           </View>
 
-          <View className="flex-row items-center rounded-2xl px-4 py-3 border border-[#CED5E0] bg-gray-light">
-            <MaterialIcons name="search" size={20} color="#AAAAAA" />
+          <View
+            className="flex-row items-center rounded-2xl px-4 py-3 border bg-gray-light"
+            style={{ borderColor: COLORS['gray-border'] }}
+          >
+            <MaterialIcons name="search" size={20} color={COLORS['gray-placeholder']} />
             <TextInput
               value={query}
               onChangeText={setQuery}
               placeholder={t('search.placeholder')}
               className="ms-3 flex-1 text-base-black"
-              placeholderTextColor="#AAAAAA"
+              placeholderTextColor={COLORS['gray-placeholder']}
             />
           </View>
         </View>

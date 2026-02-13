@@ -9,6 +9,7 @@ export const COLORS = {
   'base-black': '#000000',
 
   'gray-placeholder': '#AAAAAA',
+  'gray-border': '#CED5E0',
   'gray-icon': '#606773',
   'gray-text': '#858C94',
   'gray-light': '#F2F3F5',

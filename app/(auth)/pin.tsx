@@ -17,7 +17,7 @@ import { useTranslation } from '@/shared/i18n';
 import { authenticateWithBiometrics, getPin } from '@/shared/security';
 import { PinScreenSearchParams } from '@/shared/types/navigation';
 import { CreateStep, PinMode } from '@/shared/types/pin';
-import { BackButton } from '@/shared/ui/navigation/BackButton';
+import { BackButton } from '@/shared/ui';
 
 const PIN_KEY_SIZE = 72;
 
