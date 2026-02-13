@@ -67,14 +67,14 @@ export const usePin = ({ pinMode, user }: UsePinParams, callbacks: UsePinCallbac
                     i18n.t('auth.pin.enableBiometricsMessage'),
                     [
                       {
-                        text: i18n.t('auth.pin.enableBiometricsNotNow'),
+                        text: i18n.t('auth.pin.notNow'),
                         style: 'cancel',
                         onPress: () => {
                           router.replace('/(tabs)');
                         },
                       },
                       {
-                        text: i18n.t('auth.pin.enableBiometricsEnable'),
+                        text: i18n.t('auth.pin.enable'),
                         onPress: async () => {
                           await setBiometricsEnabled(user.id.toString(), true);
                           router.replace('/(tabs)');

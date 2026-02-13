@@ -123,13 +123,14 @@
   },
 
   "post": {
+    "about": "About",
     "comments": "Comments",
     "invalidId": "Invalid post id",
     "failedToLoad": "Failed to load post",
     "commentsError": "Failed to load comments",
     "goBack": "Go back"
   },
-  
+
   "portfolio": {
     "title": "Portfolio",
     "empty": "Your portfolio data will appear here."

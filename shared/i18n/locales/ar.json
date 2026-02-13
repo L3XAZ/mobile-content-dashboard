@@ -123,13 +123,14 @@
   },
 
   "post": {
-    "comments": "Comments",
-    "invalidId": "Invalid post id",
-    "failedToLoad": "Failed to load post",
-    "commentsError": "Failed to load comments",
-    "goBack": "Go back"
+    "about": "نبذة",
+    "comments": "التعليقات",
+    "invalidId": "معرّف المنشور غير صالح",
+    "failedToLoad": "فشل في تحميل المنشور",
+    "commentsError": "فشل في تحميل التعليقات",
+    "goBack": "العودة"
   },
-  
+
   "portfolio": {
     "title": "المحفظة",
     "empty": "ستظهر بيانات محفظتك هنا."

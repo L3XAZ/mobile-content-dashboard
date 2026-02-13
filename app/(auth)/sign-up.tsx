@@ -39,6 +39,7 @@ export default function SignUpScreen() {
     try {
       setIsLoading(true);
       clearError();
+
       const { firstName, lastName } = parseName(data.name);
 
       await registerUser({
@@ -48,7 +49,7 @@ export default function SignUpScreen() {
         username: data.username,
         password: data.password,
       });
-    } catch (error: unknown) {
+    } catch (error) {
       handleApiError(error, t('auth.signUp.registrationFailed'));
     } finally {
       setIsLoading(false);
@@ -62,11 +63,12 @@ export default function SignUpScreen() {
       bottomLinkText={t('auth.signUp.signIn')}
       bottomLinkAction={() => router.replace('/(auth)/login')}
       header={
-        <View className="bg-base-white rounded-3xl p-6 mb-6">
+        <View className="bg-base-white rounded-3xl p-6">
           <View className="flex-row items-center">
-            <View className="mr-3">
+            <View className="me-3">
               <MaterialIcons name="person-outline" size={40} color={COLORS.success} />
             </View>
+
             <View>
               <Text className="text-2xl font-bold text-base-black">{t('auth.signUp.title')}</Text>
               <Text className="text-sm text-gray-text">{t('auth.signUp.subtitle')}</Text>
@@ -75,9 +77,9 @@ export default function SignUpScreen() {
         </View>
       }
     >
-      <ApiErrorBanner error={apiError} />
+      <View className="bg-base-white rounded-3xl p-6">
+        <ApiErrorBanner error={apiError} />
 
-      <View className="bg-base-white rounded-3xl p-6 mb-6">
         <FormField
           label={t('auth.signUp.name')}
           error={errors.name?.message}
@@ -88,7 +90,7 @@ export default function SignUpScreen() {
             name="name"
             render={({ field: { onChange, onBlur, value } }) => (
               <TextInput
-                className={`border rounded-2xl px-4 py-3 pr-12 text-base ${
+                className={`border rounded-2xl px-4 py-3 text-base ${
                   errors.name || apiError ? 'border-error' : 'border-gray-light'
                 }`}
                 placeholder={t('auth.signUp.namePlaceholder')}
@@ -112,7 +114,7 @@ export default function SignUpScreen() {
             name="username"
             render={({ field: { onChange, onBlur, value } }) => (
               <TextInput
-                className={`border rounded-2xl px-4 py-3 pr-12 text-base ${
+                className={`border rounded-2xl px-4 py-3 text-base ${
                   errors.username || apiError ? 'border-error' : 'border-gray-light'
                 }`}
                 placeholder={t('auth.signUp.usernamePlaceholder')}
@@ -137,7 +139,7 @@ export default function SignUpScreen() {
             name="email"
             render={({ field: { onChange, onBlur, value } }) => (
               <TextInput
-                className={`border rounded-2xl px-4 py-3 pr-12 text-base ${
+                className={`border rounded-2xl px-4 py-3 text-base ${
                   errors.email || apiError ? 'border-error' : 'border-gray-light'
                 }`}
                 placeholder={t('auth.signUp.emailPlaceholder')}
@@ -175,8 +177,8 @@ export default function SignUpScreen() {
         </FormField>
 
         <TouchableOpacity
-          className={`bg-primary rounded-2xl py-4 items-center justify-center mt-4 ${
-            (!isValid || isLoading) && 'opacity-50'
+          className={`bg-primary rounded-2xl py-4 items-center justify-center mt-6 ${
+            !isValid || isLoading ? 'opacity-50' : ''
           }`}
           onPress={handleSubmit(onSubmit)}
           disabled={!isValid || isLoading}

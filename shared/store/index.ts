@@ -10,8 +10,8 @@ import {
   persistStore,
 } from 'redux-persist';
 
-import { persistConfig } from './persistConfig';
-import { rootReducer } from './rootReducer';
+import { persistConfig } from './persist-config';
+import { rootReducer } from './root-reducer';
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
@@ -28,4 +28,4 @@ export const store = configureStore({
 export const persistor = persistStore(store);
 
 export type AppDispatch = typeof store.dispatch;
-export type { RootState } from './rootReducer';
+export type { RootState } from './root-reducer';

@@ -1,6 +1,6 @@
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useState } from 'react';
-import { Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { I18nManager, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 import { COLORS } from '@/shared/constants';
 
@@ -24,13 +24,15 @@ export const PasswordInput = ({
   isDisabled = false,
 }: PasswordInputProps) => {
   const [showPassword, setShowPassword] = useState(false);
+  const isRTL = I18nManager.isRTL;
 
   return (
-    <>
+    <View className="relative">
       <TextInput
-        className={`border rounded-2xl px-4 py-3 pr-20 text-base ${
+        className={`border rounded-2xl px-4 py-3 text-base ${
           hasError ? 'border-error' : 'border-gray-light'
         }`}
+        style={isRTL ? { paddingLeft: 80 } : { paddingRight: 80 }}
         placeholder={placeholder}
         placeholderTextColor={placeholderTextColor}
         value={value}
@@ -41,12 +43,17 @@ export const PasswordInput = ({
         autoCorrect={false}
         editable={!isDisabled}
       />
-      <View className="absolute right-4 top-0 bottom-0 flex-row items-center gap-2">
+
+      <View
+        className="absolute top-0 bottom-0 flex-row items-center gap-2"
+        style={isRTL ? { left: 16 } : { right: 16 }}
+      >
         {hasError && (
           <View className="w-5 h-5 bg-error rounded-full items-center justify-center">
             <Text className="text-xs text-base-white font-bold">i</Text>
           </View>
         )}
+
         <TouchableOpacity
           onPress={() => setShowPassword((v) => !v)}
           activeOpacity={0.7}
@@ -59,6 +66,6 @@ export const PasswordInput = ({
           />
         </TouchableOpacity>
       </View>
-    </>
+    </View>
   );
 };

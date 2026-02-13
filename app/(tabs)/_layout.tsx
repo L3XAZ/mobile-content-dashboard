@@ -1,6 +1,7 @@
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Tabs } from 'expo-router';
 
+import { COLORS } from '@/shared/constants';
 import { useTranslation } from '@/shared/i18n';
 
 export default function TabLayout() {
@@ -9,8 +10,9 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: '#FA8A34',
         headerShown: false,
+        tabBarActiveTintColor: COLORS.primary,
+        tabBarInactiveTintColor: COLORS['gray-icon'],
       }}
     >
       <Tabs.Screen

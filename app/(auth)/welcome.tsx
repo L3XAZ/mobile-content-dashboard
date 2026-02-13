@@ -1,52 +1,58 @@
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useRouter } from 'expo-router';
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, TouchableOpacity, View, Text } from 'react-native';
 
 import { useTranslation } from '@/shared/i18n';
+
+import ChatIcon from '@/assets/icons/chat-chat-svgrepo-com.svg';
+import EyePasswordIcon from '@/assets/icons/eye-password-eye-password-svgrepo-com.svg';
+import PencilIcon from '@/assets/icons/pencil-revision-svgrepo-com.svg';
+import PersonalAccountIcon from '@/assets/icons/personal-account-account-svgrepo-com.svg';
+import SettingIcon from '@/assets/icons/setting-svgrepo-com.svg';
+import ToolboxIcon from '@/assets/icons/toolbox-svgrepo-com.svg';
+
+function IconCard({ children }: { children: React.ReactNode }) {
+  return (
+    <View className="w-[90%] h-32 items-center justify-center bg-base-white rounded-2xl shadow-sm">
+      {children}
+    </View>
+  );
+}
 
 export default function WelcomeScreen() {
   const router = useRouter();
   const { t } = useTranslation();
 
   return (
-    <ScrollView className="flex-1 bg-base-white">
+    <ScrollView className="flex-1 bg-base-white" showsVerticalScrollIndicator={false}>
       <View className="flex-1 px-6 pt-16 pb-8 min-h-screen">
-        <View className="mb-12">
-          <View className="w-24 h-24 bg-primary rounded-3xl items-center justify-center mb-8">
-            <Text className="text-6xl text-base-white">₿</Text>
-          </View>
-        </View>
+        <View className="flex-1 justify-center mb-8">
+          <View className="flex-row justify-between">
+            <View className="flex-1 items-center gap-4 -mt-6">
+              <IconCard>
+                <PersonalAccountIcon width={40} height={40} />
+              </IconCard>
 
-        <View className="mb-12">
-          <Text className="text-3xl font-bold text-base-black mb-2">{t('auth.welcome.title')}</Text>
-          <Text className="text-base text-gray-text">{t('auth.welcome.subtitle')}</Text>
-        </View>
+              <IconCard>
+                <ChatIcon width={40} height={40} />
+              </IconCard>
 
-        <View className="mb-8">
-          <View className="flex-row flex-wrap gap-4 mb-4">
-            <View className="w-[48%] h-32 bg-primary rounded-2xl items-center justify-center">
-              <Text className="text-4xl text-base-white mb-2">₿</Text>
-              <Text className="text-sm text-base-white font-semibold">
-                {t('auth.welcome.bitcoin')}
-              </Text>
+              <IconCard>
+                <EyePasswordIcon width={40} height={40} />
+              </IconCard>
             </View>
-            <View className="w-[48%] h-32 bg-blue-500 rounded-2xl items-center justify-center">
-              <MaterialIcons name="business" size={32} color="#FFFFFF" />
-              <Text className="text-sm text-base-white font-semibold mt-2">
-                {t('auth.welcome.etfs')}
-              </Text>
-            </View>
-            <View className="w-[48%] h-32 bg-green-500 rounded-2xl items-center justify-center">
-              <MaterialIcons name="people" size={32} color="#FFFFFF" />
-              <Text className="text-sm text-base-white font-semibold mt-2">
-                {t('auth.welcome.crowdLending')}
-              </Text>
-            </View>
-            <View className="w-[48%] h-32 bg-yellow-500 rounded-2xl items-center justify-center">
-              <MaterialIcons name="bolt" size={32} color="#FFFFFF" />
-              <Text className="text-sm text-base-white font-semibold mt-2">
-                {t('auth.welcome.commodities')}
-              </Text>
+
+            <View className="flex-1 items-center gap-4 mt-6">
+              <IconCard>
+                <ToolboxIcon width={40} height={40} />
+              </IconCard>
+
+              <IconCard>
+                <SettingIcon width={40} height={40} />
+              </IconCard>
+
+              <IconCard>
+                <PencilIcon width={40} height={40} />
+              </IconCard>
             </View>
           </View>
         </View>

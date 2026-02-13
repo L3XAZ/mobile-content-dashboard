@@ -11,10 +11,10 @@ module.exports = {
     extend: {
       colors: {
         primary: {
-          DEFAULT: '#FA8A34',
+          DEFAULT: '#F6A04D',
         },
         success: {
-          DEFAULT: '#00A36D',
+          DEFAULT: '#009B69',
         },
         error: {
           DEFAULT: '#D63C41',

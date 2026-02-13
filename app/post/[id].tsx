@@ -1,11 +1,16 @@
-import { ScrollView, Text, View, ActivityIndicator, Pressable } from 'react-native';
+import { Image } from 'expo-image';
+import type { ImageSourcePropType } from 'react-native';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { ActivityIndicator, Pressable, ScrollView, Text, View } from 'react-native';
 
 import { usePost, usePostComments } from '@/features/posts';
-import { safeGoBack } from '@/shared/navigation/safe-navigation';
-import { COLORS } from '@/shared/constants';
 import { useTranslation } from '@/shared/i18n';
+import { safeGoBack } from '@/shared/navigation/safe-navigation';
+import { ContentCard } from '@/shared/ui/cards/ContentCard';
+import { BackButton } from '@/shared/ui/navigation/BackButton';
+
+const POST_ILLUSTRATION: ImageSourcePropType =
+  require('@/assets/images/post-illustration.png') as ImageSourcePropType;
 
 export default function PostDetailScreen() {
   const router = useRouter();
@@ -15,7 +20,6 @@ export default function PostDetailScreen() {
   const postId = Number(params.id);
 
   const { data: post, isLoading: isPostLoading, isError: isPostError } = usePost(postId);
-
   const {
     data: comments,
     isLoading: isCommentsLoading,
@@ -43,47 +47,66 @@ export default function PostDetailScreen() {
       <View className="flex-1 items-center justify-center bg-base-white px-6">
         <Text className="text-error text-center">{t('post.failedToLoad')}</Text>
         <Pressable
-          className="mt-4 px-4 py-2 bg-primary rounded-xl"
+          className="mt-4 px-5 py-3 bg-primary rounded-2xl"
           onPress={() => safeGoBack(router, '/(tabs)')}
         >
-          <Text className="text-base-white">{t('common.back')}</Text>
+          <Text className="text-base-white font-semibold text-center">{t('common.back')}</Text>
         </Pressable>
       </View>
     );
   }
 
   return (
-    <View className="flex-1 bg-base-white">
+    <View className="flex-1 bg-gray-light">
       <Stack.Screen options={{ headerShown: false }} />
 
-      <ScrollView contentContainerStyle={{ paddingBottom: 24 }}>
-        <View className="px-4 pt-12 pb-6">
-          <Pressable
-            onPress={() => safeGoBack(router, '/(tabs)')}
-            className="w-10 h-10 items-center justify-center mb-6"
-          >
-            <MaterialIcons name="arrow-back" size={24} color={COLORS['base-black']} />
-          </Pressable>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 32 }}
+      >
+        <View className="bg-base-white rounded-b-[32px] pt-14 pb-8 px-4">
+          <View className="mb-6">
+            <BackButton onPress={() => safeGoBack(router, '/(tabs)')} />
+          </View>
 
-          <Text className="text-2xl font-bold text-base-black">{post.title}</Text>
+          <Text className="text-2xl font-bold text-base-black text-center">{post.title}</Text>
 
-          <Text className="text-gray-text text-base mt-4">{post.body}</Text>
+          <View className="mt-6 items-center">
+            <Image
+              source={POST_ILLUSTRATION}
+              style={{ width: 260, height: 200 }}
+              contentFit="contain"
+            />
+          </View>
         </View>
 
         <View className="px-4 mt-6">
+          <Text className="text-gray-text text-sm mb-3">{t('post.about')}</Text>
+
+          <ContentCard body={post.body} bodyTone="primary" />
+        </View>
+
+        <View className="px-4 mt-8">
           <Text className="text-gray-text text-sm mb-3">{t('post.comments')}</Text>
 
           {isCommentsLoading && <ActivityIndicator />}
 
           {isCommentsError && <Text className="text-error">{t('post.commentsError')}</Text>}
 
-          {comments?.map((comment) => (
-            <View key={comment.id} className="bg-gray-light rounded-2xl p-4 mb-3">
-              <Text className="text-base-black font-semibold">{comment.name}</Text>
-              <Text className="text-gray-text text-sm mt-1">{comment.email}</Text>
-              <Text className="text-base-black text-sm mt-2">{comment.body}</Text>
-            </View>
-          ))}
+          <View className="gap-3">
+            {comments?.map((comment) => (
+              <ContentCard
+                key={comment.id}
+                header={
+                  <View>
+                    <Text className="text-base-black font-semibold">{comment.name}</Text>
+                    <Text className="text-base-black text-sm">{comment.email}</Text>
+                  </View>
+                }
+                body={comment.body}
+              />
+            ))}
+          </View>
         </View>
       </ScrollView>
     </View>

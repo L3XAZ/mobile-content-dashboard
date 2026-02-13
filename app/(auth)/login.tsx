@@ -39,7 +39,7 @@ export default function LoginScreen() {
       setIsLoading(true);
       clearError();
       await login(data.username, data.password);
-    } catch (error: unknown) {
+    } catch (error) {
       handleApiError(error, t('auth.login.error'));
     } finally {
       setIsLoading(false);
@@ -52,18 +52,22 @@ export default function LoginScreen() {
       bottomLinkLabel={t('auth.login.noAccount')}
       bottomLinkText={t('auth.login.createAccount')}
       bottomLinkAction={() => router.replace('/(auth)/sign-up')}
-    >
-      <View className="bg-base-white rounded-3xl p-6 mb-6">
-        <View className="flex-row items-center mb-6">
-          <View className="mr-3">
-            <MaterialIcons name="person-outline" size={40} color={COLORS.success} />
-          </View>
-          <View>
-            <Text className="text-2xl font-bold text-base-black">{t('auth.login.title')}</Text>
-            <Text className="text-sm text-gray-text">{t('auth.login.subtitle')}</Text>
+      header={
+        <View className="bg-base-white rounded-3xl p-6">
+          <View className="flex-row items-center">
+            <View className="me-3">
+              <MaterialIcons name="person-outline" size={40} color={COLORS.success} />
+            </View>
+
+            <View>
+              <Text className="text-2xl font-bold text-base-black">{t('auth.login.title')}</Text>
+              <Text className="text-sm text-gray-text">{t('auth.login.subtitle')}</Text>
+            </View>
           </View>
         </View>
-
+      }
+    >
+      <View className="bg-base-white rounded-3xl p-6">
         <ApiErrorBanner error={apiError} />
 
         <FormField
@@ -76,7 +80,7 @@ export default function LoginScreen() {
             name="username"
             render={({ field: { onChange, onBlur, value } }) => (
               <TextInput
-                className={`border rounded-2xl px-4 py-3 pr-12 text-base ${
+                className={`border rounded-2xl px-4 py-3 text-base ${
                   errors.username || apiError ? 'border-error' : 'border-gray-light'
                 }`}
                 placeholder={t('auth.login.usernamePlaceholder')}
@@ -118,8 +122,8 @@ export default function LoginScreen() {
         </FormField>
 
         <TouchableOpacity
-          className={`bg-primary rounded-2xl py-4 items-center justify-center mt-4 ${
-            (!isValid || isLoading) && 'opacity-50'
+          className={`bg-primary rounded-2xl py-4 items-center justify-center mt-6 ${
+            !isValid || isLoading ? 'opacity-50' : ''
           }`}
           onPress={handleSubmit(onSubmit)}
           disabled={!isValid || isLoading}
