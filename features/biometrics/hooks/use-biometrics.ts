@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import {
   getBiometricType,
@@ -63,9 +63,15 @@ export const useBiometricsEnabled = (userId: string | number | null) => {
   const [enabled, setEnabledState] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
+  const prevUserIdRef = useRef<string | number | null>(null);
+
   useEffect(() => {
-    if (userId === null) {
+    if (prevUserIdRef.current !== userId) {
       setEnabledState(false);
+      prevUserIdRef.current = userId;
+    }
+
+    if (userId === null) {
       setIsLoading(false);
       return;
     }
@@ -90,6 +96,7 @@ export const useBiometricsEnabled = (userId: string | number | null) => {
       if (userId === null) {
         return;
       }
+
       try {
         await setBiometricsEnabled(userId, newEnabled);
         setEnabledState(newEnabled);

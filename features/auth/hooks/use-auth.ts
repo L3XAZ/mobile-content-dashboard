@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   deleteAccessToken,
   deleteRefreshToken,
+  deletePin,
   getPin,
   setAccessToken,
   setRefreshToken,
@@ -23,12 +24,15 @@ export const useAuth = () => {
 
   const login = async (username: string, password: string): Promise<void> => {
     const response = await loginApi({ username, password });
+
     try {
       await setAccessToken(response.accessToken);
     } catch {}
+
     try {
       await setRefreshToken(response.refreshToken);
     } catch {}
+
     const userData: User = {
       id: response.id,
       email: response.email,
@@ -38,8 +42,11 @@ export const useAuth = () => {
       image: response.image,
       gender: response.gender,
     };
+
     dispatch(setAuth({ user: userData }));
+
     const pin = await getPin(userData.id.toString());
+
     if (!pin) {
       router.replace({
         pathname: '/(auth)/pin',
@@ -55,6 +62,7 @@ export const useAuth = () => {
 
   const register = async (data: RegisterRequest): Promise<void> => {
     const response = await registerApi(data);
+
     const userData: User = {
       id: response.id,
       email: response.email,
@@ -64,7 +72,9 @@ export const useAuth = () => {
       image: response.image,
       gender: response.gender,
     };
+
     dispatch(setAuth({ user: userData }));
+
     router.replace({
       pathname: '/(auth)/pin',
       params: { mode: 'create', from: 'sign-up' } as PinScreenParams,
@@ -72,9 +82,17 @@ export const useAuth = () => {
   };
 
   const logout = (): void => {
+    const userId = user?.id;
+
     dispatch(clearAuth());
+
+    if (userId !== undefined) {
+      deletePin(userId.toString()).catch(() => {});
+    }
+
     deleteAccessToken().catch(() => {});
     deleteRefreshToken().catch(() => {});
+
     router.replace('/(auth)/welcome');
   };
 

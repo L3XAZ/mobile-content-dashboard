@@ -16,10 +16,8 @@ import { COLORS, PIN_LENGTH } from '@/shared/constants';
 import { useTranslation } from '@/shared/i18n';
 import { authenticateWithBiometrics, getPin } from '@/shared/security';
 import { PinScreenSearchParams } from '@/shared/types/navigation';
+import { CreateStep, PinMode } from '@/shared/types/pin';
 import { BackButton } from '@/shared/ui/navigation/BackButton';
-
-type PinMode = 'create' | 'enter';
-type CreateStep = 'create' | 'repeat';
 
 const PIN_KEY_SIZE = 72;
 
@@ -97,10 +95,16 @@ export default function PinScreen() {
 
     try {
       const savedPin = await getPin(user.id.toString());
-      if (savedPin) {
-        handleContinue(savedPin, '', 'repeat');
+
+      if (!savedPin) {
+        hasTriedBiometricsRef.current = false;
+        return;
       }
-    } catch {}
+
+      handleContinue(savedPin, '', 'repeat');
+    } catch {
+      hasTriedBiometricsRef.current = false;
+    }
   }, [user?.id, handleContinue]);
 
   useEffect(() => {
@@ -113,8 +117,8 @@ export default function PinScreen() {
       !isEnabledLoading &&
       user?.id
     ) {
-      handleBiometricAuth();
       hasTriedBiometricsRef.current = true;
+      handleBiometricAuth();
     }
   }, [
     pinMode,
