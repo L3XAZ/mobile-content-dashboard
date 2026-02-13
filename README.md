@@ -1,50 +1,186 @@
-# Welcome to your Expo app 👋
+# Mobile Content Dashboard
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+**GitHub Repository:** https://github.com/L3XAZ/mobile-content-dashboard
 
-## Get started
+React Native (Expo) application demonstrating a complete authentication flow with PIN codes, biometric unlock, offline-first data access, and RTL support.
 
-1. Install dependencies
+---
 
-   ```bash
-   npm install
-   ```
+## Overview
 
-2. Start the app
+The app includes:
 
-   ```bash
-   npx expo start
-   ```
+- Authentication via test API (dummyjson.com)
+- Per-user PIN creation and verification
+- Biometric unlock (Face ID / Fingerprint) as a PIN unlock mechanism
+- Offline-first data access for posts
+- RTL-safe UI with Arabic language support
+- Clear architectural separation between UI, business logic, and secure storage
 
-In the output, you'll find options to open the app in a
+---
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## How to install and run locally
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+1. Clone the repository
 
-## Get a fresh project
+   `git clone https://github.com/L3XAZ/mobile-content-dashboard.git`
 
-When you're ready, run:
+   `cd mobile-content-dashboard`
 
-```bash
-npm run reset-project
-```
+2. Install dependencies:
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+   `npm install`
 
-## Learn more
+3. Start the application:
 
-To learn more about developing your project with Expo, look at the following resources:
+   `npx expo start`
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+   With cache reset:
 
-## Join the community
+   `npx expo start -c`
 
-Join our community of developers creating universal apps.
+4. Open the app in Expo Go on a physical device.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+---
+
+## Test Accounts
+
+| Username | Password     |
+| -------- | ------------ |
+| williamg | williamgpass |
+| averyp   | averyppass   |
+| evelyns  | evelynspass  |
+| logant   | logantpass   |
+| abigailr | abigailrpass |
+| jacksone | jacksonepass |
+| madisonc | madisoncpass |
+| elijahs  | elijahspass  |
+| chloem   | chloempass   |
+| mateon   | mateonpass   |
+
+---
+
+## Authentication
+
+### Login
+
+Login is performed via POST /auth/login on the dummyjson API.
+
+Access and refresh tokens are stored securely (see Secure Storage).
+
+After login, the app checks whether a PIN already exists for the user and redirects accordingly.
+
+### Registration
+
+Registration is implemented as a mock flow because dummyjson does not provide a real auth-backed registration endpoint.
+
+The app uses POST /users/add to create a user record and then authenticates the user locally. This allows PIN creation, biometric unlock, and offline-first behavior to be demonstrated without relying on fake tokens.
+
+In a production environment, this flow would be replaced by a real registration endpoint issuing tokens.
+
+### PIN Code Flow
+
+Each user must set a personal PIN on first login.
+
+- PIN is stored per user, scoped by `userId` (`pin_${userId}`)
+- PIN is never stored in Redux, serialized, or logged
+- Create, repeat, and enter flows are clearly separated
+- Incorrect PIN resets the flow in a predictable way
+- PINs persist between sessions and app restarts
+
+### Biometric Authentication
+
+Biometrics (Face ID / Fingerprint) are used only to unlock the app with the stored PIN, not as a replacement for login.
+
+- Availability and enrollment are checked explicitly
+- User consent is required
+- Biometric state is scoped per user
+- Biometric unlock uses the stored PIN with no implicit side effects
+
+### Secure Storage
+
+Sensitive data is kept outside Redux.
+
+**Production / development builds:** react-native-keychain (iOS Keychain, Android Keystore).
+
+**Expo Go (development fallback):** AsyncStorage, because Expo Go does not support custom native modules. The fallback is automatic and transparent.
+
+**Stored data:** PIN codes (per user), access token, refresh token. Tokens are cleared on logout. PINs stay per user and persist between sessions.
+
+### Existing Login & App Restart
+
+- Redux Persist restores auth state on app restart
+- PIN screen is shown instead of the welcome screen
+- Biometric unlock triggers automatically when enabled
+
+---
+
+## Offline-First Data Access
+
+Posts are loaded from https://jsonplaceholder.typicode.com/ using TanStack React Query v5 and an AsyncStorage persister. Data is cached locally so the app remains usable offline.
+
+---
+
+## Internationalization & RTL
+
+- English and Arabic are supported.
+- Full RTL via I18nManager; no hardcoded left/right spacing.
+- Icons and navigation mirror correctly in RTL.
+- Direction change triggers a controlled app reload.
+- All screens are RTL-safe without separate layouts.
+
+---
+
+## Linting and Formatting
+
+Run ESLint:
+
+`npm run lint`
+
+Auto-fix ESLint issues:
+
+`npm run lint:fix`
+
+Format code:
+
+`npm run format`
+
+The project uses strict TypeScript and ESLint: no `any` or unsafe casts.
+
+## Technology Stack
+
+### Core
+
+- React Native
+- Expo (Expo Router)
+- TypeScript (strict mode)
+- Redux Toolkit
+- Redux Persist
+- TanStack React Query v5
+- AsyncStorage (state and cache persistence)
+
+### Authentication & Security
+
+- react-native-keychain (Keychain / Keystore)
+- expo-local-authentication (Face ID / Biometrics)
+- axios
+- axios-auth-refresh
+
+### Forms & Validation
+
+- react-hook-form
+- zod
+
+### UI & Styling
+
+- NativeWind (Tailwind v4)
+- react-native-svg
+- @expo/vector-icons
+
+### Internationalization
+
+- i18next
+- react-i18next
+- RTL via I18nManager
+
+---
