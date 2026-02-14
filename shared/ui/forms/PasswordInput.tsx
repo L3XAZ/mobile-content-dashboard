@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { I18nManager, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 import { COLORS } from '@/shared/constants';
+import { cn } from '@/shared/utils';
 
 interface PasswordInputProps {
   value: string;
@@ -29,9 +30,10 @@ export const PasswordInput = ({
   return (
     <View className="relative">
       <TextInput
-        className={`border rounded-2xl px-4 py-3 text-base ${
+        className={cn(
+          'border rounded-2xl px-4 py-3 text-base',
           hasError ? 'border-error' : 'border-gray-light'
-        }`}
+        )}
         style={isRTL ? { paddingLeft: 80 } : { paddingRight: 80 }}
         placeholder={placeholder}
         placeholderTextColor={placeholderTextColor}

@@ -1,6 +1,8 @@
 import { Pressable, Text, View } from 'react-native';
 import type { ReactNode } from 'react';
 
+import { cn } from '@/shared/utils';
+
 type ContentCardProps = {
   header?: ReactNode;
   body: ReactNode;
@@ -25,7 +27,7 @@ export function ContentCard({ header, body, bodyTone = 'secondary', onPress }: C
 
       {typeof body === 'string' ? (
         <Text
-          className={bodyTone === 'primary' ? 'text-base-black text-sm' : 'text-gray-text text-sm'}
+          className={cn('text-sm', bodyTone === 'primary' ? 'text-base-black' : 'text-gray-text')}
         >
           {body}
         </Text>

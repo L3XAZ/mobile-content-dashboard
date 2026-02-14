@@ -9,14 +9,16 @@ import { selectUser } from '@/features/auth/store';
 import {
   useBiometricsAvailability,
   useBiometricsEnabled,
+  useBiometricsPrompted,
   useBiometricType,
 } from '@/features/biometrics/hooks';
 import { usePin } from '@/features/pin/hooks';
 import { COLORS, PIN_LENGTH } from '@/shared/constants';
 import { useTranslation } from '@/shared/i18n';
+import { cn } from '@/shared/utils';
 import { authenticateWithBiometrics, getPin } from '@/shared/security';
 import { PinScreenSearchParams } from '@/shared/types/navigation';
-import { CreateStep, PinMode } from '@/shared/types/pin';
+import type { CreateStep, PinMode } from '@/shared/types/pin';
 import { BackButton } from '@/shared/ui';
 
 const PIN_KEY_SIZE = 72;
@@ -62,6 +64,10 @@ export default function PinScreen() {
     user?.id ?? null
   );
 
+  const { prompted: biometricsPrompted, isLoading: isPromptedLoading } = useBiometricsPrompted(
+    user?.id ?? null
+  );
+
   const { handleContinue, error, isLoading, isProcessing } = usePin(
     { pinMode, user },
     {
@@ -72,20 +78,47 @@ export default function PinScreen() {
     }
   );
 
-  const title =
-    pinMode === 'create'
-      ? createStep === 'create'
-        ? t('auth.pin.createTitle')
-        : t('auth.pin.repeatTitle')
-      : t('auth.pin.enterTitle');
+  const createTitleByStep: Record<CreateStep, string> = {
+    create: t('auth.pin.createTitle'),
+    repeat: t('auth.pin.repeatTitle'),
+  };
+
+  const title = pinMode === 'create' ? createTitleByStep[createStep] : t('auth.pin.enterTitle');
 
   const subtitle = pinMode === 'enter' ? t('auth.pin.enterSubtitle') : t('auth.pin.createSubtitle');
 
+  const showUserEmail = pinMode === 'enter' && Boolean(user?.email);
+
+  const canSubmitPin = pin.length === PIN_LENGTH && !isProcessing && !isLoading;
+
+  const biometricLabelByType: Record<string, string> = {
+    faceid: t('auth.pin.useFaceId'),
+    fingerprint: t('auth.pin.useFingerprint'),
+    other: t('auth.pin.useBiometrics'),
+  };
+
+  const showBiometricsButton =
+    pinMode === 'enter' &&
+    biometricsEnabled === true &&
+    biometricsPrompted === true &&
+    isBiometricsAvailable === true;
+
+  const canAutoTriggerBiometrics =
+    pinMode === 'enter' &&
+    biometricsEnabled === true &&
+    biometricsPrompted === true &&
+    isBiometricsAvailable === true &&
+    !hasTriedBiometricsRef.current &&
+    !isAvailabilityLoading &&
+    !isEnabledLoading &&
+    !isPromptedLoading &&
+    Boolean(user?.id);
+
   useEffect(() => {
-    if (pin.length === PIN_LENGTH && !isProcessing && !isLoading) {
+    if (canSubmitPin) {
       handleContinue(pin, firstPin, createStep);
     }
-  }, [pin, firstPin, createStep, isProcessing, isLoading, handleContinue]);
+  }, [pin, firstPin, createStep, canSubmitPin, handleContinue]);
 
   const handleBiometricAuth = useCallback(async () => {
     if (!user?.id) return;
@@ -108,27 +141,11 @@ export default function PinScreen() {
   }, [user?.id, handleContinue]);
 
   useEffect(() => {
-    if (
-      pinMode === 'enter' &&
-      biometricsEnabled === true &&
-      isBiometricsAvailable === true &&
-      !hasTriedBiometricsRef.current &&
-      !isAvailabilityLoading &&
-      !isEnabledLoading &&
-      user?.id
-    ) {
+    if (canAutoTriggerBiometrics) {
       hasTriedBiometricsRef.current = true;
       handleBiometricAuth();
     }
-  }, [
-    pinMode,
-    biometricsEnabled,
-    isBiometricsAvailable,
-    isAvailabilityLoading,
-    isEnabledLoading,
-    user?.id,
-    handleBiometricAuth,
-  ]);
+  }, [canAutoTriggerBiometrics, handleBiometricAuth]);
 
   const handleDigitPress = (digit: string) => {
     if (pin.length < PIN_LENGTH) {
@@ -177,9 +194,9 @@ export default function PinScreen() {
             </View>
           )}
 
-          {pinMode === 'enter' && user?.email && (
+          {showUserEmail && (
             <View className="mb-4 items-center">
-              <Text className="text-lg font-semibold text-base-black mb-2">{user.email}</Text>
+              <Text className="text-lg font-semibold text-base-black mb-2">{user?.email}</Text>
               <TouchableOpacity onPress={handleChangeAccount} activeOpacity={0.7}>
                 <Text className="text-sm text-primary font-semibold">
                   {t('auth.pin.changeAccount')}
@@ -208,11 +225,12 @@ export default function PinScreen() {
           {Array.from({ length: PIN_LENGTH }).map((_, index) => (
             <View
               key={index}
-              className={`w-6 h-6 rounded-full border-2 ${
+              className={cn(
+                'w-6 h-6 rounded-full border-2',
                 index < pin.length
                   ? 'bg-primary border-primary'
                   : 'border-gray-light bg-transparent'
-              }`}
+              )}
             />
           ))}
         </View>
@@ -262,18 +280,14 @@ export default function PinScreen() {
           </View>
         </View>
 
-        {pinMode === 'enter' && biometricsEnabled === true && isBiometricsAvailable === true && (
+        {showBiometricsButton && (
           <TouchableOpacity
-            className="bg-primary rounded-2xl py-4 items-center justify-center mb-14"
+            className={cn('bg-primary rounded-2xl py-4 items-center justify-center mb-14')}
             onPress={handleBiometricAuth}
             activeOpacity={0.8}
           >
             <Text className="text-base-white text-lg font-semibold">
-              {biometricType === 'faceid'
-                ? t('auth.pin.useFaceId')
-                : biometricType === 'fingerprint'
-                  ? t('auth.pin.useFingerprint')
-                  : t('auth.pin.useBiometrics')}
+              {biometricLabelByType[biometricType ?? 'other']}
             </Text>
           </TouchableOpacity>
         )}

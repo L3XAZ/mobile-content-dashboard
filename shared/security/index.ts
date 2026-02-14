@@ -5,4 +5,6 @@ export {
   authenticateWithBiometrics,
   getBiometricsEnabled,
   setBiometricsEnabled,
+  getBiometricsPrompted,
+  setBiometricsPrompted,
 } from './biometrics';

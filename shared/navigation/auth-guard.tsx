@@ -12,8 +12,9 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const segmentsArray = segments as string[];
     const isOnAuthScreen = segmentsArray.includes('(auth)');
+    const shouldRedirectToAuth = !user && !isAuthenticated && !isOnAuthScreen;
 
-    if (!user && !isAuthenticated && !isOnAuthScreen) {
+    if (shouldRedirectToAuth) {
       router.replace('/(auth)/welcome');
     }
   }, [user, isAuthenticated, segments, router]);

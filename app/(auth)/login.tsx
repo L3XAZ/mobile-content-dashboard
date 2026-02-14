@@ -12,6 +12,7 @@ import { useApiError } from '@/shared/hooks/use-api-error';
 import { useTranslation } from '@/shared/i18n';
 import { safeGoBack } from '@/shared/navigation/safe-navigation';
 import { ApiErrorBanner, AuthFormLayout, FormField, PasswordInput } from '@/shared/ui';
+import { cn } from '@/shared/utils';
 import { createLoginSchema } from '@/shared/validation';
 
 type LoginFormData = z.infer<ReturnType<typeof createLoginSchema>>;
@@ -80,9 +81,10 @@ export default function LoginScreen() {
             name="username"
             render={({ field: { onChange, onBlur, value } }) => (
               <TextInput
-                className={`border rounded-2xl px-4 py-3 text-base ${
+                className={cn(
+                  'border rounded-2xl px-4 py-3 text-base',
                   errors.username || apiError ? 'border-error' : 'border-gray-light'
-                }`}
+                )}
                 placeholder={t('auth.login.usernamePlaceholder')}
                 placeholderTextColor={COLORS['gray-placeholder']}
                 value={value}
@@ -122,9 +124,10 @@ export default function LoginScreen() {
         </FormField>
 
         <TouchableOpacity
-          className={`bg-primary rounded-2xl py-4 items-center justify-center mt-6 ${
-            !isValid || isLoading ? 'opacity-50' : ''
-          }`}
+          className={cn(
+            'bg-primary rounded-2xl py-4 items-center justify-center mt-6',
+            (!isValid || isLoading) && 'opacity-50'
+          )}
           onPress={handleSubmit(onSubmit)}
           disabled={!isValid || isLoading}
           activeOpacity={0.8}

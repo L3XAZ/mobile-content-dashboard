@@ -59,3 +59,23 @@ export const setBiometricsEnabled = async (
     await AsyncStorage.setItem(key, enabled ? 'true' : 'false');
   } catch {}
 };
+
+export const getBiometricsPrompted = async (userId: string | number): Promise<boolean> => {
+  const key = `biometrics_prompted_${userId}`;
+  try {
+    const value = await AsyncStorage.getItem(key);
+    return value === 'true';
+  } catch {
+    return false;
+  }
+};
+
+export const setBiometricsPrompted = async (
+  userId: string | number,
+  prompted: boolean
+): Promise<void> => {
+  const key = `biometrics_prompted_${userId}`;
+  try {
+    await AsyncStorage.setItem(key, prompted ? 'true' : 'false');
+  } catch {}
+};
